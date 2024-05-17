@@ -1,0 +1,16 @@
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/gopi-frame/contract v0.0.0-20240517013806-dc3242b222d8 h1:G6DS189BXDhPhkHJRxfdO+yzpRSG77lCvoOaTWDHlBk=
+github.com/gopi-frame/contract v0.0.0-20240517013806-dc3242b222d8/go.mod h1:/eezR+L2U3yjKXy2h74bLwssDG3KwdJwcq0Jrs38VCc=
+github.com/gopi-frame/exception v0.0.0-20240517030638-8d9d2c8deff7 h1:BJckikKgUfYl6OEpEtpOCPfUimEw0pIEUATU6sGHF1Q=
+github.com/gopi-frame/exception v0.0.0-20240517030638-8d9d2c8deff7/go.mod h1:Ic9Uq9ad58EYrjImUPE2wTfn2tcK+9X7Gtp/YVPradg=
+github.com/gopi-frame/support v0.0.0-20240517030649-e39b6da6876b h1:BdDfGkcncTsIdb/y5nz55j9bInZnTDr5fUgOqVkYtJk=
+github.com/gopi-frame/support v0.0.0-20240517030649-e39b6da6876b/go.mod h1:h9xui90BXQ+KeXiIubYUpxo/7V9Cf2NyfnxyKIzOJjQ=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
+github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
