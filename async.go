@@ -2,12 +2,13 @@ package future
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"sync"
 	"time"
 
 	"github.com/gopi-frame/exception"
 	"github.com/gopi-frame/support/lists"
+	"github.com/gopi-frame/utils/catch"
 )
 
 func newFuture[T any]() *Future[T] {
@@ -28,14 +29,10 @@ func Void(callback func()) *Future[any] {
 func Async[T any](callback func() T) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			future.value = callback()
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = fmt.Errorf("exception: %v", err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
@@ -59,14 +56,10 @@ func Timeout[T any](callback func() T, timeout time.Duration) *Future[T] {
 			exception.NewTimeoutException())
 		defer cancel()
 		done := make(chan struct{}, 1)
-		go exception.Try(func() {
+		go catch.Try(func() {
 			future.value = callback()
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(done)
 		}).Run()
@@ -88,15 +81,11 @@ func Timeout[T any](callback func() T, timeout time.Duration) *Future[T] {
 func Delay[T any](callback func() T, delay time.Duration) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			time.Sleep(delay)
 			future.value = callback()
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
@@ -119,7 +108,8 @@ func Foreach[T any, R any](elements []T, callback func(element T) *Future[R]) *F
 
 // Wait wait
 func Wait[T any](futures ...*Future[T]) *Future[*lists.List[T]] {
-	values := lists.NewList(make([]T, len(futures), len(futures))...)
+	values := lists.NewList(make([]T, len(futures))...)
+	errs := []error{}
 	future := newFuture[*lists.List[T]]()
 	future.fn = func() {
 		wg := sync.WaitGroup{}
@@ -127,15 +117,12 @@ func Wait[T any](futures ...*Future[T]) *Future[*lists.List[T]] {
 		for index, f := range futures {
 			go func(index int, f *Future[T]) {
 				values.Lock()
-				exception.Try(func() {
+				catch.Try(func() {
 					<-f.completed
 					values.Set(index, f.value)
 				}).CatchAll(func(err error) {
-					if exp, ok := err.(error); ok {
-						f.err = exp
-					} else {
-						f.err = exception.NewValueException(err)
-					}
+					f.err = err
+					errs = append(errs, f.err)
 				}).Finally(func() {
 					wg.Done()
 					values.Unlock()
@@ -143,6 +130,7 @@ func Wait[T any](futures ...*Future[T]) *Future[*lists.List[T]] {
 			}(index, f)
 		}
 		wg.Wait()
+		future.err = errors.Join(errs...)
 		future.value = values
 		close(future.completed)
 	}

@@ -3,7 +3,7 @@ package future
 import (
 	"reflect"
 
-	"github.com/gopi-frame/exception"
+	"github.com/gopi-frame/utils/catch"
 )
 
 // Future future
@@ -25,7 +25,7 @@ func (f *Future[T]) Await() T {
 func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			<-f.completed
 			if f.err != nil {
 				if onError != nil {
@@ -37,11 +37,7 @@ func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Futu
 				future.value = onValue(f.value)
 			}
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
@@ -53,7 +49,7 @@ func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Futu
 func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			<-f.completed
 			if f.err != nil && handler != nil {
 				if reflect.TypeOf(err) == reflect.TypeOf(f.err) {
@@ -65,11 +61,7 @@ func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 				panic(f.err)
 			}
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
@@ -81,7 +73,7 @@ func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 func (f *Future[T]) CatchAll(handler func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			<-f.completed
 			future.value = f.value
 			if f.err != nil && handler != nil {
@@ -90,11 +82,7 @@ func (f *Future[T]) CatchAll(handler func(err error)) *Future[T] {
 				panic(f.err)
 			}
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
@@ -106,17 +94,13 @@ func (f *Future[T]) CatchAll(handler func(err error)) *Future[T] {
 func (f *Future[T]) Complete(handler func()) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
-		go exception.Try(func() {
+		go catch.Try(func() {
 			<-f.completed
 			future.value = f.value
 			future.err = f.err
 			handler()
 		}).CatchAll(func(err error) {
-			if exp, ok := err.(error); ok {
-				future.err = exp
-			} else {
-				future.err = exception.NewValueException(err)
-			}
+			future.err = err
 		}).Finally(func() {
 			close(future.completed)
 		}).Run()
