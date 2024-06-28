@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gopi-frame/collection/list"
 	"github.com/gopi-frame/exception"
-	"github.com/gopi-frame/support/lists"
 	"github.com/gopi-frame/utils/catch"
 )
 
@@ -107,10 +107,10 @@ func Foreach[T any, R any](elements []T, callback func(element T) *Future[R]) *F
 }
 
 // Wait wait
-func Wait[T any](futures ...*Future[T]) *Future[*lists.List[T]] {
-	values := lists.NewList(make([]T, len(futures))...)
+func Wait[T any](futures ...*Future[T]) *Future[*list.List[T]] {
+	values := list.NewList(make([]T, len(futures))...)
 	errs := []error{}
-	future := newFuture[*lists.List[T]]()
+	future := newFuture[*list.List[T]]()
 	future.fn = func() {
 		wg := sync.WaitGroup{}
 		wg.Add(len(futures))
