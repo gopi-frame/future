@@ -17,7 +17,7 @@ func newFuture[T any]() *Future[T] {
 	}
 }
 
-// Void future without return
+// Void asynchronously executes a callback without return values
 func Void(callback func()) *Future[any] {
 	return Async(func() any {
 		callback()
@@ -25,7 +25,7 @@ func Void(callback func()) *Future[any] {
 	})
 }
 
-// Async async
+// Async asynchronously executes a callback without return values
 func Async[T any](callback func() T) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -41,14 +41,14 @@ func Async[T any](callback func() T) *Future[T] {
 	return future
 }
 
-// Value value
+// Value returns an async value
 func Value[T any](value T) *Future[T] {
 	return Async(func() T {
 		return value
 	})
 }
 
-// Timeout with timeout
+// Timeout asynchronously executes a callback with timeout
 func Timeout[T any](callback func() T, timeout time.Duration) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -77,7 +77,7 @@ func Timeout[T any](callback func() T, timeout time.Duration) *Future[T] {
 	return future
 }
 
-// Delay delay
+// Delay asynchronously executes a callback after delay
 func Delay[T any](callback func() T, delay time.Duration) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -94,7 +94,7 @@ func Delay[T any](callback func() T, delay time.Duration) *Future[T] {
 	return future
 }
 
-// Foreach foreach
+// Foreach asynchronously traverses a slice
 func Foreach[T any, R any](elements []T, callback func(element T) *Future[R]) *Future[any] {
 	wg := sync.WaitGroup{}
 	wg.Add(len(elements))
@@ -106,10 +106,10 @@ func Foreach[T any, R any](elements []T, callback func(element T) *Future[R]) *F
 	return future
 }
 
-// Wait wait
+// Wait waits until all the futures are finished
 func Wait[T any](futures ...*Future[T]) *Future[*list.List[T]] {
 	values := list.NewList(make([]T, len(futures))...)
-	errs := []error{}
+	var errs []error
 	future := newFuture[*list.List[T]]()
 	future.fn = func() {
 		wg := sync.WaitGroup{}

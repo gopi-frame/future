@@ -6,7 +6,7 @@ import (
 	"github.com/gopi-frame/utils/catch"
 )
 
-// Future future
+// Future a simple asynchronous encapsulation
 type Future[T any] struct {
 	fn        func()
 	value     T
@@ -14,6 +14,7 @@ type Future[T any] struct {
 	completed chan struct{}
 }
 
+// Await block until the future is finished
 func (f *Future[T]) Await() T {
 	<-f.completed
 	if f.err != nil {
@@ -22,6 +23,9 @@ func (f *Future[T]) Await() T {
 	return f.value
 }
 
+// Then accepts two callbacks,
+// when future is successfully executed, onValue will be called
+// when error occurred, onError will be called
 func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -46,6 +50,7 @@ func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Futu
 	return future
 }
 
+// Catch catches specific error
 func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -70,6 +75,7 @@ func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 	return future
 }
 
+// CatchAll catches all errors
 func (f *Future[T]) CatchAll(handler func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -91,6 +97,7 @@ func (f *Future[T]) CatchAll(handler func(err error)) *Future[T] {
 	return future
 }
 
+// Complete executes after the future is completed
 func (f *Future[T]) Complete(handler func()) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
