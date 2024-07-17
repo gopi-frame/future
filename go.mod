@@ -2,12 +2,12 @@ module github.com/gopi-frame/future
 
 go 1.22.2
 
-replace (
-	github.com/gopi-frame/collection => ../collection
-	github.com/gopi-frame/contract/exception => ../contract/exception
-	github.com/gopi-frame/exception => ../exception
-	github.com/gopi-frame/utils => ../utils
-)
+//replace (
+//	github.com/gopi-frame/collection => ../collection
+//	github.com/gopi-frame/contract/exception => ../contract/exception
+//	github.com/gopi-frame/exception => ../exception
+//	github.com/gopi-frame/utils => ../utils
+//)
 
 require (
 	github.com/gopi-frame/exception v0.0.0-20240628085057-b605370ef1c5
