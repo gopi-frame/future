@@ -3,7 +3,7 @@ package future
 import (
 	"reflect"
 
-	"github.com/gopi-frame/utils/catch"
+	"github.com/gopi-frame/util/catch"
 )
 
 // Future a simple asynchronous encapsulation

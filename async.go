@@ -8,7 +8,7 @@ import (
 
 	"github.com/gopi-frame/collection/list"
 	"github.com/gopi-frame/exception"
-	"github.com/gopi-frame/utils/catch"
+	"github.com/gopi-frame/util/catch"
 )
 
 func newFuture[T any]() *Future[T] {
