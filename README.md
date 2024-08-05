@@ -4,6 +4,7 @@
 [![Go](https://github.com/gopi-frame/future/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/gopi-frame/future/actions/workflows/go.yml)
 [![codecov](https://codecov.io/gh/gopi-frame/future/graph/badge.svg?token=UGVGP6QF5O)](https://codecov.io/gh/gopi-frame/future)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gopi-frame/future)](https://goreportcard.com/report/github.com/gopi-frame/future)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 ## Installation
 ```
