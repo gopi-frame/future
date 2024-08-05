@@ -1,4 +1,4 @@
-name: go.yml
+name: Go
 on: [push, pull_request]
 
 jobs:
@@ -16,12 +16,13 @@ jobs:
         run: go get -u -v
 
       - name: Test with coverage report
-        run: go test -v -coverprofile=coverage.txt ./...
+        run: go test -v -coverprofile=coverage.out ./...
 
-      - name: Install goveralls
-        run: go install github.com/mattn/goveralls@latest
-
-      - name: Send coverage
-        env:
-          COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: goveralls -coverprofile=coverage.txt -service=github
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.out
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: true
