@@ -1,7 +1,10 @@
 # Future - a simple encapsulation of asynchronous operations
+
 [![Go Reference](https://pkg.go.dev/badge/github.com/gopi-frame/future.svg)](https://pkg.go.dev/github.com/gopi-frame/future)
-[![Coverage Status](https://coveralls.io/repos/github/gopi-frame/future/badge.svg)](https://coveralls.io/github/gopi-frame/future)
 [![Go](https://github.com/gopi-frame/future/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/gopi-frame/future/actions/workflows/go.yml)
+[![codecov](https://codecov.io/gh/gopi-frame/future/graph/badge.svg?token=UGVGP6QF5O)](https://codecov.io/gh/gopi-frame/future)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gopi-frame/future)](https://goreportcard.com/report/github.com/gopi-frame/future)
+
 ## Installation
 ```
 go get -u -v github.com/gopi-frame/future
