@@ -25,7 +25,7 @@ func (f *Future[T]) Await() T {
 
 // Then accepts two callbacks,
 // when future is successfully executed, onValue will be called
-// when error occurred, onError will be called
+// when exception occurred, onError will be called
 func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {
@@ -50,7 +50,7 @@ func (f *Future[T]) Then(onValue func(value T) T, onError func(err error)) *Futu
 	return future
 }
 
-// Catch catches specific error
+// Catch catches specific exception
 func (f *Future[T]) Catch(err error, handler func(err error)) *Future[T] {
 	future := newFuture[T]()
 	future.fn = func() {

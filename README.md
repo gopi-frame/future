@@ -197,13 +197,13 @@ import (
 type RequestError struct{}
 
 func (r *RequestError) Error() string {
-	return "request error"
+	return "request exception"
 }
 
 type JSONDecodeError struct{}
 
 func (j *JSONDecodeError) Error() string {
-	return "json decode error"
+	return "json decode exception"
 }
 
 func main() {
@@ -228,11 +228,11 @@ func main() {
 		return result
 	}).Then(nil, func(err error) {
 		if e, ok := err.(*RequestError); ok {
-			fmt.Println("send request error: ", e.Error())
+			fmt.Println("send request exception: ", e.Error())
         } else if e, ok := err.(*JSONDecodeError); ok {
 			fmt.Println("invalid json string: ", e.Error())
         } else {
-			fmt.Println("error: ", err.Error())
+			fmt.Println("exception: ", err.Error())
         }
     })
 }
@@ -253,13 +253,13 @@ import (
 type RequestError struct{}
 
 func (r *RequestError) Error() string {
-	return "request error"
+	return "request exception"
 }
 
 type JSONDecodeError struct{}
 
 func (j *JSONDecodeError) Error() string {
-	return "json decode error"
+	return "json decode exception"
 }
 
 func main() {
@@ -283,11 +283,11 @@ func main() {
         }
 		return result
 	}).Catch(new(RequestError), func(err error) {
-		fmt.Println("send request error: ", err.Error())
+		fmt.Println("send request exception: ", err.Error())
 	}).Catch(new(JSONDecodeError), func(err error) {
         fmt.Println("invalid json string: ", err.Error())
 	}).CatchAll(func(err error) {
-		fmt.Println("error: ", err.Error())
+		fmt.Println("exception: ", err.Error())
 	})
 }
 ```

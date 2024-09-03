@@ -92,11 +92,11 @@ func TestFuture_Catch(t *testing.T) {
 	t.Run("Exception on Async", func(t *testing.T) {
 		assert.Panics(t, func() {
 			Void(func() {
-				panic(errors.New("error on async"))
+				panic(errors.New("exception on async"))
 			}).Then(func(value any) any {
 				return nil
 			}, nil).Catch(exception.NewTimeoutException(), func(err error) {
-				assert.EqualError(t, err, "error on async")
+				assert.EqualError(t, err, "exception on async")
 			}).Await()
 		})
 	})
@@ -105,9 +105,9 @@ func TestFuture_Catch(t *testing.T) {
 		assert.NotPanics(t, func() {
 			Void(func() {
 			}).Then(func(value any) any {
-				panic(errors.New("error on then"))
-			}, nil).Catch(errors.New("error on then"), func(err error) {
-				assert.EqualError(t, err, "error on then")
+				panic(errors.New("exception on then"))
+			}, nil).Catch(errors.New("exception on then"), func(err error) {
+				assert.EqualError(t, err, "exception on then")
 			}).Await()
 		})
 	})
